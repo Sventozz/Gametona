@@ -101,6 +101,19 @@ void AGametonaCharacter::StartTimer() {
 	OnTimerFired();
 }
 
+void AGametonaCharacter::AddCoin(){
+	UE_LOG(LogTemp, Display, TEXT("Add + 1 Coin"));
+	SetCoin(1);
+}
+
+void AGametonaCharacter::SetCoin(int coin){
+	Coin = coin;
+}
+
+int AGametonaCharacter::GetCoin(){
+ return Coin;
+}
+
 void AGametonaCharacter::OnTimerFired() {
 	if (++TimerCount <= MaxTimeCount) {
 	UE_LOG(LogTemp, Display, TEXT("Start Timer"));

@@ -10,17 +10,34 @@ UCLASS()
 class GAMETONA_API ABaseGametonaActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABaseGametonaActor();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "NewComponents")
+		class USceneComponent* SceneComponentNew;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "NewComponents")
+		class UStaticMeshComponent* StaticMeshNew;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "NewComponents")
+		class USphereComponent* SphereColliderNew;
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	UFUNCTION()
+	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//UFUNCTION(BlueprintCallable, Category = Gameplay)
+	UFUNCTION(BlueprintNativeEvent, Category = "Helper")
+		void ShowHelper();
+		void ShowHelper_Implementation();
 };
