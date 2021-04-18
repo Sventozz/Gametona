@@ -14,6 +14,9 @@ class AGametonaCharacter : public ACharacter
 public:
 	AGametonaCharacter();
 
+
+	virtual void BeginPlay() override;
+
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -23,6 +26,9 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns CursorToWorld subobject **/
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
+
+	UFUNCTION(BlueprintCallable, Category = Timer)
+	void StartTimer();
 
 private:
 	/** Top down camera */
@@ -36,5 +42,14 @@ private:
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UDecalComponent* CursorToWorld;
+
+	FTimerHandle TimerHandle;
+	const int32 MaxTimeCount = 1;
+	int TimerCount = 0;
+
+	void OnTimerFired();
+	float MaxSpeed;
+	float IncreasedSpeed = 2.0f;
+
 };
 

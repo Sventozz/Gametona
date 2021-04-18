@@ -11,6 +11,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include "TimerManager.h"
 
 AGametonaCharacter::AGametonaCharacter()
 {
@@ -57,6 +58,12 @@ AGametonaCharacter::AGametonaCharacter()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void AGametonaCharacter::BeginPlay() {
+	Super::BeginPlay();
+
+	MaxSpeed = GetCharacterMovement()->GetMaxSpeed();
+}
+
 void AGametonaCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
@@ -86,5 +93,25 @@ void AGametonaCharacter::Tick(float DeltaSeconds)
 			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
+	}
+}
+
+void AGametonaCharacter::StartTimer() {
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AGametonaCharacter::OnTimerFired, 10.0f, true);
+	OnTimerFired();
+}
+
+void AGametonaCharacter::OnTimerFired() {
+	if (++TimerCount <= MaxTimeCount) {
+	UE_LOG(LogTemp, Display, TEXT("Start Timer"));
+	UE_LOG(LogTemp, Display, TEXT("Increased Speed to: %f"), MaxSpeed * IncreasedSpeed);
+	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed * IncreasedSpeed;
+	}
+	else {
+	UE_LOG(LogTemp, Display, TEXT("Stop Timer"));
+	UE_LOG(LogTemp, Display, TEXT("Decreased Speed to: %f"), MaxSpeed);
+	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
+	TimerCount = 0;
+	GetWorldTimerManager().ClearTimer(TimerHandle);
 	}
 }
