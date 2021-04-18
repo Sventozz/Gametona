@@ -5,9 +5,8 @@
 #include "../Public/BaseGametonaActor.h"
 
 // Sets default values
-ABaseGametonaActor::ABaseGametonaActor()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ABaseGametonaActor::ABaseGametonaActor() {
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SceneComponentNew = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponentNew"));
@@ -20,19 +19,14 @@ ABaseGametonaActor::ABaseGametonaActor()
 	StaticMeshNew = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshNew"));
 	StaticMeshNew->SetupAttachment(SphereColliderNew);
 	//StaticMeshNew->SetCollisionProfileName(TEXT("Pawn"));
-
 }
 
-
-
-
 // Called when the game starts or when spawned
-void ABaseGametonaActor::BeginPlay()
-{
+void ABaseGametonaActor::BeginPlay() {
 	Super::BeginPlay();
 
 	SphereColliderNew->OnComponentBeginOverlap.AddDynamic(this, &ABaseGametonaActor::OnSphereOverlap);
-	
+	SphereColliderNew->OnComponentEndOverlap.AddDynamic(this, &ABaseGametonaActor::OnEndSphereOverlap); //OnComponentBeginOverlap.AddDynamic(this, &ABaseGametonaActor::OnSphereOverlap);
 }
 
 
@@ -40,22 +34,25 @@ void ABaseGametonaActor::OnSphereOverlap(UPrimitiveComponent* OverlappedComponen
 	AGametonaCharacter* Character = Cast<AGametonaCharacter>(OtherActor);
 
 	if (Character) {
-	//Character->AddCoin();
-	ShowHelper();
+		UE_LOG(LogTemp, Display, TEXT("Begin Overlap Sphere"));
+		ShowHelper();
+	}
+}
+
+void ABaseGametonaActor::OnEndSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+	AGametonaCharacter* Character = Cast<AGametonaCharacter>(OtherActor);
+
+	if (Character) {
+		UE_LOG(LogTemp, Display, TEXT("End Overlap Sphere"));
+		ShowHelper();
 	}
 }
 
 // Called every frame
-void ABaseGametonaActor::Tick(float DeltaTime)
-{
+void ABaseGametonaActor::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
 }
 
-void ABaseGametonaActor::ShowHelper_Implementation()
-{
+void ABaseGametonaActor::ShowHelper_Implementation() {
 	UE_LOG(LogTemp, Display, TEXT("Show Helper"));
 }
-
-
-

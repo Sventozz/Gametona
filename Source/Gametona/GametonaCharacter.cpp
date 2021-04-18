@@ -101,12 +101,13 @@ void AGametonaCharacter::StartTimer() {
 	OnTimerFired();
 }
 
-void AGametonaCharacter::AddCoin(){
+void AGametonaCharacter::AddCoin(int coin){
 	UE_LOG(LogTemp, Display, TEXT("Add + 1 Coin"));
-	SetCoin(1);
+	Coin += coin;
 }
 
 void AGametonaCharacter::SetCoin(int coin){
+	UE_LOG(LogTemp, Display, TEXT("Set Coin. Count: %d"), coin);
 	Coin = coin;
 }
 
@@ -116,15 +117,15 @@ int AGametonaCharacter::GetCoin(){
 
 void AGametonaCharacter::OnTimerFired() {
 	if (++TimerCount <= MaxTimeCount) {
-	UE_LOG(LogTemp, Display, TEXT("Start Timer"));
-	UE_LOG(LogTemp, Display, TEXT("Increased Speed to: %f"), MaxSpeed * IncreasedSpeed);
-	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed * IncreasedSpeed;
+		UE_LOG(LogTemp, Display, TEXT("Start Timer"));
+		UE_LOG(LogTemp, Display, TEXT("Increased Speed to: %f"), MaxSpeed * IncreasedSpeed);
+		GetCharacterMovement()->MaxWalkSpeed = MaxSpeed * IncreasedSpeed;
 	}
 	else {
-	UE_LOG(LogTemp, Display, TEXT("Stop Timer"));
-	UE_LOG(LogTemp, Display, TEXT("Decreased Speed to: %f"), MaxSpeed);
-	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
-	TimerCount = 0;
-	GetWorldTimerManager().ClearTimer(TimerHandle);
+		UE_LOG(LogTemp, Display, TEXT("Stop Timer"));
+		UE_LOG(LogTemp, Display, TEXT("Decreased Speed to: %f"), MaxSpeed);
+		GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
+		TimerCount = 0;
+		GetWorldTimerManager().ClearTimer(TimerHandle);
 	}
 }

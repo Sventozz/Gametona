@@ -31,7 +31,7 @@ public:
 		void StartTimer();
 
 	UFUNCTION(BlueprintCallable, Category = Gameplay)
-		void AddCoin();
+		void AddCoin(int coin);
 
 	UFUNCTION(BlueprintCallable, Category = Gameplay)
 		void SetCoin(int coin);
