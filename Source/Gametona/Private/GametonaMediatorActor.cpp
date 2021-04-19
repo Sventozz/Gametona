@@ -8,34 +8,45 @@
 AGametonaMediatorActor::AGametonaMediatorActor() {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void AGametonaMediatorActor::BeginPlay() {
+
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay"));
+
+	SpawnVendor();
+	SpawnCoins();
+}
+
+void AGametonaMediatorActor::SpawnVendor() {
+	UE_LOG(LogTemp, Display, TEXT("Spawn Vendor"));
 
 	UWorld* World = GetWorld();
 	if (World) {
-		
-		// Spawn Vendor
 		const FTransform VendorTransform = FTransform(FRotator::ZeroRotator, FVector(300.0f, 0.0f, 280.0f));
 		ABaseGametonaActor* Vendor = World->SpawnActor<ABaseGametonaActor>(VendorClass, VendorTransform);
-		
-		// Spawn Coins
+		Vendor->OnSpawnCoins.AddUObject(this, &AGametonaMediatorActor::OnSpawnCoins);
+	}
+}
+
+void AGametonaMediatorActor::SpawnCoins() {
+	UE_LOG(LogTemp, Display, TEXT("Spawn Coins"));
+
+	UWorld* World = GetWorld();
+	if (World) {
 		for (int32 i = 0; i < 5; ++i) {
-			const FTransform CoinsTransform = FTransform(FRotator::ZeroRotator, FVector(-600.0f,  -350.0 * i, 280.0f));
+			const FTransform CoinsTransform = FTransform(FRotator::ZeroRotator, FVector(-600.0f, -350.0 * i, 280.0f));
 			ABaseGametonaActor* Coin = World->SpawnActor<ABaseGametonaActor>(CoinClass, CoinsTransform);
 		}
 	}
-
-
-
 }
 
-// Called every frame
-void AGametonaMediatorActor::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
-
+void AGametonaMediatorActor::OnSpawnCoins(AActor * Actor) {
+	if (!Actor) return; 
+	UE_LOG(LogTemp, Display, TEXT("On Spawn Coins"));
+	SpawnCoins();
 }
+
 

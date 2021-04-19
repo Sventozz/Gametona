@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseGametonaActor.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnSpawnCoins, AActor*);
+
 UCLASS()
 class GAMETONA_API ABaseGametonaActor : public AActor {
 	GENERATED_BODY()
@@ -23,6 +25,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "NewComponents")
 		class USphereComponent* SphereColliderNew;
 
+		FOnSpawnCoins OnSpawnCoins;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,10 +38,7 @@ protected:
 	void OnEndSphereOverlap(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex);
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	//UFUNCTION(BlueprintCallable, Category = Gameplay)
 	UFUNCTION(BlueprintNativeEvent, Category = "Helper")
 		void ShowHelper();
 		void ShowHelper_Implementation();

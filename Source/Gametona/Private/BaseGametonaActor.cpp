@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "../Public/BaseGametonaActor.h"
 #include "Components/SphereComponent.h"
 #include "../GametonaCharacter.h"
-#include "../Public/BaseGametonaActor.h"
 
 // Sets default values
 ABaseGametonaActor::ABaseGametonaActor() {
@@ -26,7 +26,7 @@ void ABaseGametonaActor::BeginPlay() {
 	Super::BeginPlay();
 
 	SphereColliderNew->OnComponentBeginOverlap.AddDynamic(this, &ABaseGametonaActor::OnSphereOverlap);
-	SphereColliderNew->OnComponentEndOverlap.AddDynamic(this, &ABaseGametonaActor::OnEndSphereOverlap); //OnComponentBeginOverlap.AddDynamic(this, &ABaseGametonaActor::OnSphereOverlap);
+	SphereColliderNew->OnComponentEndOverlap.AddDynamic(this, &ABaseGametonaActor::OnEndSphereOverlap);
 }
 
 
@@ -45,12 +45,10 @@ void ABaseGametonaActor::OnEndSphereOverlap(UPrimitiveComponent* OverlappedCompo
 	if (Character) {
 		UE_LOG(LogTemp, Display, TEXT("End Overlap Sphere"));
 		ShowHelper();
-	}
-}
 
-// Called every frame
-void ABaseGametonaActor::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
+		// Spawn Coins
+		OnSpawnCoins.Broadcast(this);
+	}
 }
 
 void ABaseGametonaActor::ShowHelper_Implementation() {

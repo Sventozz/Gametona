@@ -11,8 +11,8 @@ UCLASS()
 class GAMETONA_API AGametonaMediatorActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AGametonaMediatorActor();
 
@@ -21,13 +21,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ABaseGametonaActor> VendorClass;
+		TSubclassOf<ABaseGametonaActor> VendorClass;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ABaseGametonaActor> CoinClass;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+		TSubclassOf<ABaseGametonaActor> CoinClass;
+private:
+	void SpawnVendor();
+	void SpawnCoins();
+	void OnSpawnCoins(AActor* Actor);
 };
